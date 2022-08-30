@@ -19,13 +19,18 @@
         </Grid.ColumnDefinitions>
 
         <TextBox x:Name="Path" Text="{Binding Path}" Height="25" VerticalAlignment="Top" Margin="10"/>
-        
-        <ListBox Margin="10,50,10,10" ItemsSource="{Binding Items}">
+
+        <ListBox Margin="10,50,10,10" ItemsSource="{Binding Items}" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel IsItemsHost="True" Orientation="Horizontal"/>
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Vertical" Width="100" Height="100" Margin="5">
                         <Image Width="80" Height="80" Source="{Binding Icon, Mode=OneWay}"/>
-                        <TextBlock Height="20" HorizontalAlignment="Center" VerticalAlignment="Bottom" Text="{Binding Path=Name, Mode=OneWay}"/>
+                        <TextBlock Height="20" TextAlignment="Center" VerticalAlignment="Bottom" Text="{Binding Path=Name, Mode=OneWay}"/>
                     </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>

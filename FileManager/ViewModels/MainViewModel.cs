@@ -22,7 +22,7 @@ namespace FileManager.ViewModels
         public string Path
         {
             get { return _path; }
-            set { _path = value; }
+            set { _path = value; FinalLoad(); OnPropertyChanged("Items"); }
         }
         //private readonly ObservableCollection<Item> _items;
         //public ObservableCollection<Item> Items { get { return _items; } }
@@ -32,27 +32,12 @@ namespace FileManager.ViewModels
 
         public MainViewModel()
         {
-            TestLoad();
+            Path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
         }
-        public void TestLoad()
+
+        public void FinalLoad()
         {
-            Items = new ObservableCollection<Item>();
-            Items.Add(new File
-            {
-                Name = "someFile",
-                Path = @"C:\Users\andrey\Desktop\file.exe",
-                Size = 12,
-                DateCreated = DateTime.Now,
-                DateModified = DateTime.Now
-            });
-            Items.Add(new Folder
-            {
-                Name = "someFolder",
-                Path = @"C:\Users\andrey\Desktop\",
-                Type = ItemType.folder,
-                Size = 120,
-                AmountOfItems = 2
-            });
+            Items = EnviromentProvider.GetItemsInDirectory(Path);
         }
     }
 }

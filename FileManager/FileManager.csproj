@@ -63,6 +63,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Models\EnviromentProvider.cs" />
     <Compile Include="Models\File.cs" />
     <Compile Include="Models\Folder.cs" />
     <Compile Include="Models\Item.cs" />
