@@ -18,30 +18,34 @@ namespace FileManager.Models
                 throw new Exception("Path is not exsist");
 
             ObservableCollection<Item> items = new ObservableCollection<Item>();
-            foreach (var dir in di.GetDirectories())
+            try
             {
-                items.Add(new Folder
+                foreach (var dir in di.GetDirectories())
                 {
-                    Name = dir.Name,
-                    Path = dir.FullName,
-                    Size = dir.GetFiles().Sum(x=>x.Length),
-                    AmountOfItems = dir.GetFiles().Length,
-                    Type = ItemType.folder
-                });
-            }
+                    items.Add(new Folder
+                    {
+                        Name = dir.Name,
+                        Path = dir.FullName,
+                        Size = dir.GetFiles().Sum(x => x.Length),
+                        AmountOfItems = dir.GetFiles().Length,
+                        Type = ItemType.folder
+                    });
+                }
 
-            foreach(var file in di.GetFiles())
-            {
-                items.Add(new File
+                foreach (var file in di.GetFiles())
                 {
-                    Name = file.Name,
-                    Path = file.FullName,
-                    Size = file.Length,
-                    DateCreated = file.CreationTime,
-                    DateModified = file.LastWriteTime,
-                    Type = GetType(file.FullName)
-                });
+                    items.Add(new File
+                    {
+                        Name = file.Name,
+                        Path = file.FullName,
+                        Size = file.Length,
+                        DateCreated = file.CreationTime,
+                        DateModified = file.LastWriteTime,
+                        Type = GetType(file.FullName)
+                    });
+                }
             }
+            catch(Exception e) { }
             return items;
         }
 
