@@ -10,6 +10,12 @@ namespace FileManager.Models
 {
     public static class EnviromentProvider
     {
+        /// <summary>
+        /// Searh for folders and files in directory
+        /// </summary>
+        /// <param name="Path"></param>
+        /// <returns>ObservableCollection of Files and Folders downcasted to Items</returns>
+        /// <exception cref="Exception"></exception>
         public static ObservableCollection<Item> GetItemsInDirectory(string Path)
         {
             DirectoryInfo di = new DirectoryInfo(Path);
