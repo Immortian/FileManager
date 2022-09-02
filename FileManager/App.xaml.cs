@@ -51,7 +51,6 @@ namespace FileManager
             });
             
             services.AddSingleton<MainWindow>();
-            services.AddSingleton<MainViewModel>();
         }
 
         private void OnStartup(object sender, StartupEventArgs e)

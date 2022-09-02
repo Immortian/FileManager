@@ -14,7 +14,7 @@ namespace FileManager.Models
         /// Searh for folders and files in directory
         /// </summary>
         /// <param name="Path"></param>
-        /// <returns>ObservableCollection of Files and Folders downcasted to Items</returns>
+        /// <returns>bool result and ObservableCollection of Files and Folders downcasted to Items</returns>
         /// <exception cref="Exception"></exception>
         public static bool TryGetItemsInDirectory(string Path, out ObservableCollection<Item> Items)
         {
