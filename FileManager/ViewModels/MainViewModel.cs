@@ -169,12 +169,19 @@ namespace FileManager.ViewModels
                     UseShellExecute = true
                 };
                 p.Start();
-                _context.Histories.Add(new History
+                try
                 {
-                    Filename = item.Path,
-                    DateVisited = DateTime.Now
-                });
-                _context.SaveChanges();
+                    _context.Histories.Add(new History
+                    {
+                        Filename = item.Path,
+                        DateVisited = DateTime.Now
+                    });
+                    _context.SaveChanges();
+                }
+                catch(Exception e)
+                {
+                    MessageBox.Show("Check your db connection");
+                }
             }
         }
 
