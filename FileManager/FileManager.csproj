@@ -3,21 +3,8 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net6.0-windows</TargetFramework>
-    <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
   </PropertyGroup>
-
-  <ItemGroup>
-    <None Remove="Icons\arrow-upward.png" />
-    <None Remove="Icons\docs.png" />
-    <None Remove="Icons\folder.png" />
-    <None Remove="Icons\image.png" />
-    <None Remove="Icons\label.png" />
-    <None Remove="Icons\pdf.png" />
-    <None Remove="Icons\reload.png" />
-    <None Remove="Icons\spreadsheet.png" />
-    <None Remove="Icons\unknown.png" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.8" />

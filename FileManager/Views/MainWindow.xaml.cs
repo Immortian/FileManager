@@ -1,4 +1,5 @@
-﻿using FileManager.ViewModels;
+﻿using FileManager.Data;
+using FileManager.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,9 +22,10 @@ namespace FileManager.Views
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MainWindow()
+        public MainWindow(historydbContext context)
         {
             InitializeComponent();
+            this.DataContext = new MainViewModel(context);
         }
     }
 }

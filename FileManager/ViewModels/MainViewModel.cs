@@ -1,4 +1,5 @@
-﻿using FileManager.Models;
+﻿using FileManager.Data;
+using FileManager.Models;
 using FileManager.Views;
 using System;
 using System.Collections.Generic;
@@ -33,15 +34,21 @@ namespace FileManager.ViewModels
         public string Path
         {
             get { return _path; }
-            set { _path = value; CDCommand(_path); OnPropertyChanged("Items"); OnPropertyChanged("Path"); }
+            set { _temppath = _path; _path = value; CDCommand(_path); OnPropertyChanged("Items"); OnPropertyChanged("Path"); }
         }
 
         /// <summary>
-        /// Set path to base directory
+        /// last correct used path
         /// </summary>
-        public MainViewModel()
+        private string _temppath;
+
+        /// <summary>
+        /// Set path to base directory, get db context from dependency injection
+        /// </summary>
+        public MainViewModel(historydbContext context)
         {
             Path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            _context = context;
         }
 
         /// <summary>
@@ -108,8 +115,21 @@ namespace FileManager.ViewModels
         /// <param name="path"></param>
         private void CDCommand(string path)
         {
-            Items = EnviromentProvider.GetItemsInDirectory(path);
+            var tempItems = Items;
+            if (EnviromentProvider.TryGetItemsInDirectory(path, out tempItems))
+                Items = tempItems;
+            else
+            {
+                MessageBox.Show("This path does not exists, or permission denied. Try to restart as administrator");
+                Path = _temppath;
+            }
+               
         }
+
+        /// <summary>
+        /// logging db context
+        /// </summary>
+        private readonly historydbContext _context;
 
         //Item commands
 
@@ -142,8 +162,19 @@ namespace FileManager.ViewModels
             }
             else
             {
-                Process.Start(item.Path);
-                //Write in DB
+                //Process.Start(item.Path);
+                var p = new Process();
+                p.StartInfo = new ProcessStartInfo(item.Path)
+                {
+                    UseShellExecute = true
+                };
+                p.Start();
+                _context.Histories.Add(new History
+                {
+                    Filename = item.Path,
+                    DateVisited = DateTime.Now
+                });
+                _context.SaveChanges();
             }
         }
 

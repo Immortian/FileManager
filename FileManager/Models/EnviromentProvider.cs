@@ -16,43 +16,53 @@ namespace FileManager.Models
         /// <param name="Path"></param>
         /// <returns>ObservableCollection of Files and Folders downcasted to Items</returns>
         /// <exception cref="Exception"></exception>
-        public static ObservableCollection<Item> GetItemsInDirectory(string Path)
+        public static bool TryGetItemsInDirectory(string Path, out ObservableCollection<Item> Items)
         {
             DirectoryInfo di = new DirectoryInfo(Path);
-
-            if (!di.Exists)
-                throw new Exception("Path is not exsist");
-
-            ObservableCollection<Item> items = new ObservableCollection<Item>();
             try
             {
+                if (!di.Exists)
+                    throw new Exception("Path is not exsist");
+
+                ObservableCollection<Item> items = new ObservableCollection<Item>();
+            
                 foreach (var dir in di.GetDirectories())
                 {
-                    items.Add(new Folder
-                    {
-                        Name = dir.Name,
-                        Path = dir.FullName,
-                        Size = dir.GetFiles().Sum(x => x.Length),
-                        AmountOfItems = dir.GetFiles().Length,
-                        Type = ItemType.folder
-                    });
+                    if((dir.Attributes & FileAttributes.ReparsePoint) != FileAttributes.ReparsePoint &&
+                    (dir.Attributes & FileAttributes.System) != FileAttributes.System)
+                        items.Add(new Folder
+                        {
+                            Name = dir.Name,
+                            Path = dir.FullName,
+                            Size = dir.GetFiles().Sum(x => x.Length),
+                            AmountOfItems = dir.GetFiles().Length,
+                            Type = ItemType.folder
+                        });
                 }
 
                 foreach (var file in di.GetFiles())
                 {
-                    items.Add(new File
-                    {
-                        Name = file.Name,
-                        Path = file.FullName,
-                        Size = file.Length,
-                        DateCreated = file.CreationTime,
-                        DateModified = file.LastWriteTime,
-                        Type = GetType(file.FullName)
-                    });
+                    if ((di.Attributes & FileAttributes.ReparsePoint) != FileAttributes.ReparsePoint &&
+                    (di.Attributes & FileAttributes.System) != FileAttributes.System)
+                        items.Add(new File
+                        {
+                            Name = file.Name,
+                            Path = file.FullName,
+                            Size = file.Length,
+                            DateCreated = file.CreationTime,
+                            DateModified = file.LastWriteTime,
+                            Type = GetType(file.FullName)
+                        });
                 }
+                Items = items;
+                return true;
             }
-            catch(Exception e) { }
-            return items;
+            catch (Exception e)
+            {
+                Items = new ObservableCollection<Item>();
+                return false;
+            }
+
         }
 
         private static ItemType? GetType(string fileName)
