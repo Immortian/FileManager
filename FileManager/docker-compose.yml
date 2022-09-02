@@ -1,0 +1,25 @@
+version: '3.4'
+
+services:
+  historydb:
+    container_name: historydb
+    image: postgres:13.3
+    restart: always
+    environment:
+      POSTGRES_USER: filemanager
+      POSTGRES_PASSWORD: filemanager
+      POSTGRES_DB: historydb
+    volumes:
+      - ./CreateDatabase.sql:/docker-entrypoint-initdb.d/CreateDatabase.sql
+    ports:
+      - "5432:5432"
+      
+  pgadmin:
+    container_name: pgadmin4
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: filemanager
+    ports:
+      - "5050:80"
