@@ -38,5 +38,5 @@ Application is ready to start. If you want permission to see your system files r
 
 1. EnviromentProvider will automaticly ignor all folders with attribute ReparsePoint and System
 2. File icons are just png and there are only 7 icons for: folders, .doc/.docx, .xls/.xlsx/.xml, .pdf, .png/.jpg/.jpeg, .url for links and one ('unknown') for everything else
-3. There are some kind of dependency injection in app.xaml.xs
-4. There are DbInitializer.cs file ensures that database exists or will be automaticaly created from model (there are also CreateDatabase.sql if you interested in sql code)
+3. There are some kind of dependency injection in app.xaml.cs
+4. There are DbInitializer class ensures that database exists or will be automaticaly created from model (there are also CreateDatabase.sql if you interested in sql code)
